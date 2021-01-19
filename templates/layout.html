@@ -193,6 +193,12 @@
       <form>
       <a class="nav-item nav-link" href="{{ url_for('sign_out') }}"> <p style="color:red">Log out</p></a>
       <a class="nav-item nav-link" href="{{ url_for('sign_out_delete') }}"> <p style="color:red">Delete Account</p></a>
+      {%if session["type"] == "patient"%}
+      <a class="nav-item nav-link" href="{{url_for('patient_page',id=session['id'])}}"> <p style="color:red">My Page</p></a>
+      {%endif%}
+      {%if session["type"] == "psychologist"%}
+      <a class="nav-item nav-link" href="{{url_for('psychologist_page',id=session['id'])}}"> <p style="color:red">My Page</p></a>
+      {%endif%}
      </form>
       {%endif%}
     </main>

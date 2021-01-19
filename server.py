@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 
 
-HEROKU = True
+HEROKU = False
 
 if(not HEROKU):
     os.environ['DATABASE_URL'] = "dbname='postgres' user='postgres' host='localhost' password='1234'"
@@ -37,7 +37,7 @@ def appointment_page(id=0,type=0):
     print(list(request.form.items()))
     psychologist = queries.select("id,name,mail","psychologist",asDict=True)
     if(request.method == "GET"):
-        return render_template("appointment.html",active_num = active_num,total_user=total_user,psychologist = psychologist,id=id)
+        return render_template("appointment.html",session_id = (session["id"]),session_type = session["type"],active_num = active_num,total_user=total_user,psychologist = psychologist,id=id)
 
     psychologist = queries.select("id,name","psychologist",asDict=True)
     print("?-"*26)
@@ -46,7 +46,7 @@ def appointment_page(id=0,type=0):
     psy = queries.select("id","psychologist","mail = '{}'".format(requests["mail"]),asDict=True)
     print(psy)
     queries.insert("appointment","psychologist_id,patient_id,day,time","{},{},{},{}".format(psy["id"],session["id"],requests["day"],requests["time"]))
-    return render_template("appointment.html",active_num = active_num,total_user=total_user,psychologist = psychologist,id=id)
+    return render_template("appointment.html",session_id = (session["id"]),session_type = session["type"],active_num = active_num,total_user=total_user,psychologist = psychologist,id=id)
 
 
 @app.route("/patient_page/<id>",methods = ["GET","POST"])
@@ -89,7 +89,7 @@ def home_page():
     patients = queries.select("name,id","patient",asDict=True)
     psychologist = queries.select("id,name","psychologist",asDict=True)
 
-    return render_template("home_page.html",joined = joined,active_num = active_num,total_user=total_user,id = 10, appointment = appointment,patients = patients,psychologist=psychologist)
+    return render_template("home_page.html",session_id = (session["id"]),session_type = session["type"],joined = joined,active_num = active_num,total_user=total_user,id = 10, appointment = appointment,patients = patients,psychologist=psychologist)
 
 
 @app.route("/psychologist_page/<id>",methods = ["GET","POST"])
@@ -187,7 +187,7 @@ def psychologist_page_all():
             psys.insert(0,temp)
     print(psys)
 
-    return render_template("psychologist_page_all.html",active_num = active_num,psys = psys, point_id_dict = point_id_dict,total_user=total_user)
+    return render_template("psychologist_page_all.html",session_id = (session["id"]),session_type = session["type"],active_num = active_num,psys = psys, point_id_dict = point_id_dict,total_user=total_user)
 
 @app.route("/login",methods = ["GET","POST"])
 def login_page():
@@ -220,7 +220,7 @@ def login_page():
                 session["address"] = user["address"]
                 return redirect(url_for('psychologist_page',id=user["id"]))
         flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html',active_num = active_num, title='Login', form=form,total_user=total_user)
+    return render_template('login.html',session_id = (session["id"]),session_type = session["type"],active_num = active_num, title='Login', form=form,total_user=total_user)
 
 
 @app.route('/forgot_page', methods=['GET', 'POST'])
@@ -238,7 +238,7 @@ def forgot_page():
     if form.validate_on_submit():
         queries.update("patient", "password = {}".format(form.password.data), where="mail = '{}'".format(form.mail.data))
 
-    return render_template('forgot_page.html',form = form,active_num = active_num,total_user=total_user)
+    return render_template('forgot_page.html',session_id = (session["id"]),session_type = session["type"],form = form,active_num = active_num,total_user=total_user)
 
 
 
@@ -307,13 +307,13 @@ def register():
             if (success[-1] == -1 ):
                 string = "you could not signed up due to " + str(success[0])
                 flash(string, "error")
-                return render_template('register.html',active_num = active_num, title='Register', form=form)
+                return render_template('register.html',session_id = (session["id"]),session_type = session["type"],active_num = active_num, title='Register', form=form)
 
         flash("you have signed up", "success")
         
         return redirect("/login")
 
-    return render_template('register.html',active_num = active_num, title='Register', form=form,total_user=total_user)
+    return render_template('register.html',session_id = (session["id"]),session_type = session["type"],active_num = active_num, title='Register', form=form,total_user=total_user)
 
 
 if __name__ == "__main__":
