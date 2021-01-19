@@ -1,0 +1,60 @@
+{% extends "layout.html"%}
+
+{%block title %} {{psychologist['name']}}{%endblock title %}
+
+
+{%block content %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Doctor</th>
+        <th scope="col">Patient</th>
+        <th scope="col">day </th>
+        <th scope="col">time </th>
+      </tr>
+    </thead>
+    <tbody>
+        
+        {% for app in appointments %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>
+        {% for dict_item in psychologist %}
+          {% if dict_item["id"] == app["psychologist_id"]%}
+          <a href = "{{url_for('psychologist_page',id=dict_item['id'])}}">{{dict_item["name"]}}</a>
+           {% endif %}
+        {% endfor %}
+       </td>
+        <td>{{patients["name"]}}</td>
+        <td>{{app['day']}}</td>
+        <td>{{app['time']}}</td>
+        {%if session_type == "patient"%}{%if session_id == patients["id"]%}
+        
+        <td>
+          <form method="POST" action="">
+            <input type="submit" name = "{{app['id']}}" value = "Cancel" class="btn btn-danger">
+          </form>
+        </td>
+        
+        {%endif%}{%endif%}
+       </tr>
+
+         {% endfor %}
+        {%if session_id == page_id%} 
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-primary"><ahref ><a href="{{url_for('appointment_page',id = patients['id'],type = 'patient')}}">Add new</a></button></td>
+        </tr>
+        
+        {%endif%}
+        <tr>
+
+        </tr>
+    </tbody>
+  </table>
+{%endblock content %}

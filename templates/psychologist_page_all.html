@@ -1,0 +1,35 @@
+{% extends "layout.html"%}
+
+{%block title %} {{psychologist['name']}}{%endblock title %}
+
+
+{%block content %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Doctor</th>
+        <th scope="col">mail</th>
+        <th scope="col">address </th>
+        <th scope="col">point </th>
+      </tr>
+    </thead>
+    <tbody>
+        
+        {% for psy in psys %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <th scope="row"><a href = "{{url_for('psychologist_page',id=psy['id'])}}">{{psy['name']}}</a></th>
+        <th scope="row">{{psy['mail']}}</th>
+        <th scope="row">{{psy['address']}}</th>
+        <th scope="row">{{point_id_dict[psy["id"]]}}</th>
+      </tr>
+
+         {% endfor %}
+        
+        <tr>
+
+        </tr>
+    </tbody>
+  </table>
+{%endblock content %}

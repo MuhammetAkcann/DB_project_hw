@@ -1,0 +1,39 @@
+{% extends "layout.html"%}
+
+{%block title %} {{psychologist['name']}}{%endblock title %}
+
+
+{%block content %}
+<form class="row g-3" action = "{{url_for('appointment_page',id = id,type = 'patient')}}" method="post">
+   
+    <div class="input-group col-md-6 mt-5" name = "mail">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01" name = "mail" >mail</label>
+      </div>
+      <select class="custom-select" name = "mail" id="inputGroupSelect01">
+        <option selected name = "mail">Choose...</option>
+        {%for psy in psychologist%}
+        <option name = "mail" value = {{psy['mail']}}>{{psy["mail"]}}</option>
+        {%endfor%}
+      </select>
+    </div>
+    <div class="col-md-6 mt-3" >
+      <label for="name" class="form-label">Name</label>
+      <input type="name" class="form-control"  name = "name" id="name">
+    </div>
+    
+    <div class="col-md-6 mt-9">
+      <label for="day" class="form-label">day</label>
+      <input type="text" class="form-control"  name = "day" id="day">
+    </div>
+    <div class="col-md-6 mt-9">
+        <label for="time" class="form-label">time</label>
+        <input type="text" class="form-control"  name = "time" id="time">
+      </div>
+    
+    <div class="col-12 mt-2">
+      <button type="submit" class="login100-form-btn">Submit</button>
+    </div>
+</form>
+
+{%endblock content %}

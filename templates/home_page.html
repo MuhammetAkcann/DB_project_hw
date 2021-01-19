@@ -1,0 +1,31 @@
+{% extends "layout.html"%}
+
+{%block title %} Home Page {%endblock title %}
+
+
+{%block content %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Doctor</th>
+        <th scope="col">Patient</th>
+        <th scope="col">day </th>
+        <th scope="col">time </th>
+      </tr>
+    </thead>
+    <tbody>
+        
+        {% for j in joined %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+         <td><a href = "{{url_for('psychologist_page',id=j[5])}}">{{j[4]}}</a></td>     
+          <td>{{j[3]}}</td>
+        <td>{{j[1]}}</td>
+        <td>{{j[2]}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{%endblock content %}

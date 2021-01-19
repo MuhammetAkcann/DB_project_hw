@@ -1,0 +1,132 @@
+{% extends "layout.html"%}
+
+{%block title %} {{psychologist['name']}}{%endblock title %}
+
+
+{%block content %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Doctor</th>
+        <th scope="col">Patient</th>
+        <th scope="col">day </th>
+        <th scope="col">time </th>
+      </tr>
+    </thead>
+    <tbody>
+        
+        {% for j in joined %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td><a href = "{{url_for('psychologist_page',id=j[5])}}">{{j[4]}}</a></td>
+          <td>{{j[3]}}</td>
+        <td>{{j[1]}}</td>
+        <td>{{j[2]}}</td>
+        {%if session_type == "psychologist"%}{%if session_id == psychologist["id"]%}
+        
+        <td>
+          <form method="POST" action="">
+            <input type="submit" name = "{{j[0]}}" value = "Cancel" class="btn btn-danger">
+          </form>
+        </td>
+        
+        {%endif%}{%endif%}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+  <h1>POINT: <span class="label label-default">{{point}}</span></h1>
+  
+                  <div class="be-comment-block">
+                    <h1 class="comments-title">Comments ({{comments|length}})</h1>
+                    {%for comment in comments%}
+                    <div class="be-comment">
+                      <div class="be-img-comment">	
+                          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
+                        </a>
+                      </div>
+                      
+                      <div class="be-comment-content">
+                        <span class="be-comment-name">
+                          {%for patient in patients%}
+                          {%if patient["id"] == comment["patient_id"] %}
+                          <a>{{patient["name"]}}</a>
+                          {%endif%}
+                          {%endfor%}
+                        </span>
+                        
+                        <p class="be-comment-text">
+                          {{comment.comment}}
+                        </p>
+                      </div>
+                    </div>
+                    {%if session_id == comment["patient_id"]%}
+                    {%if session_type == "patient"%}
+                    <form method="POST" action="">
+                      <input type="submit" name = "{{comment['id']}}" value = "delete" class="btn btn-danger">
+                    </form>
+                    <form method="POST" action="">
+                      <input type="text" class="form-control"  name = "comment_content" id="com">
+                      <input type="submit" name = "{{comment['id']}}" value = "update" class="btn btn-danger">
+                    </form>
+                        {%endif%}
+                      {%endif%}
+                    {%endfor%}
+  {%if session_id != None%}
+  {%if session_type == "patient" %}
+	<form class="row g-3" action = "" method="post">
+    <div class="col-md-6 mt-9">
+        <label for="comment" class="form-label">comment</label>
+        <input type="text" class="form-control"  name = "comment_content" id="com">
+      </div>
+    
+    <div class="col-12 mt-2">
+      <button type="submit" name = "comment" class="login100-form-btn">Submit</button>
+    </div>
+</form>
+</div>
+</div>
+
+
+<form method="POST" action="">
+  
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Give Point</label>
+    <select class="form-control" type="input" id="exampleFormControlSelect1" name = "point">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{%endif%}
+{%endif%}
+
+
+{%if session_id != None%}
+{%if session_type == "psychologist" %}
+<form class="row g-3" action = "" method="post">
+  
+  
+  <div class="col-12 mt-2">
+    <button type="submit" name = "give_Add" class="login100-form-btn">Give Add</button>
+  </div>
+</form>
+</div>
+</div>
+
+
+
+{%endif%}
+{%endif%}
+
+
+
+
+{%endblock content %}
