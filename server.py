@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 
 
-HEROKU = False
+HEROKU = True
 if(not HEROKU):
     os.environ['DATABASE_URL'] = "dbname='postgres' user='postgres' host='localhost' password='1234'"
     initialize(os.environ.get("DATABASE_URL"))
