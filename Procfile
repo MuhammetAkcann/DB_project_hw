@@ -1,2 +1,2 @@
 web: gunicorn server:app
-release: python db_init.py
+release: python2 db_init.py
