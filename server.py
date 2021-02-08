@@ -199,8 +199,10 @@ def login_page():
     patientt = queries.select("name","patient",asDict = True)
     total_user = len(psychologistt) + len(patientt)
     form = LoginForm()
+    session["id"] = None
+    session["type"] = None
+
     if form.validate_on_submit():
-        session["id"] = None
         user = queries.select("id,name,mail,password", "patient", where="mail = '{}'".format(form.mail.data),asDict = True)
         if(user):
             if(user["mail"] == form.mail.data and user["password"] == form.password.data):
