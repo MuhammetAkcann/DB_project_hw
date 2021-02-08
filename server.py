@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 
 
-HEROKU = True
+HEROKU = False
 
 if(not HEROKU):
     os.environ['DATABASE_URL'] = "dbname='postgres' user='postgres' host='localhost' password='1234'"
@@ -73,6 +73,8 @@ def patient_page(id):
 
 @app.route("/")
 def home_page():
+    session["id"] = None
+    session["type"] = None
     active = queries.run("""SELECT current_user""")
     if active[0][0] == None:
         active.pop(0)
@@ -191,6 +193,7 @@ def psychologist_page_all():
 
 @app.route("/login",methods = ["GET","POST"])
 def login_page():
+    
     active = queries.run("""SELECT current_user""")
     if active[0][0] == None:
         active.pop(0)
